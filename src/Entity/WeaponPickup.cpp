@@ -4,6 +4,7 @@
 #include <algorithm>
 
 #include "GameState/InGame.hpp"
+#include "TextureManager.h"
 #include "Player.hpp"
 
 Weapon* CreateWeaponFromString(std::string name)
@@ -26,7 +27,8 @@ EntityWeaponPickup::EntityWeaponPickup() : Entity(EntityType::WEAPON_PICKUP)
 
 void EntityWeaponPickup::Draw()
 {
-    DrawRectangle(position.x, position.y, size.x, size.y, GREEN);
+    // DrawRectangle(position.x, position.y, size.x, size.y, GREEN);
+    DrawTexture(TextureManager::Get(type), position.x, position.y, WHITE);
 }
 
 void EntityWeaponPickup::Update()

@@ -10,5 +10,5 @@ GameState* GameStateManager::GetState()
 void GameStateManager::SetState(GameState* state)
 {
     delete GameStateManager::state;
-    GameStateManager::state = state; 
+    GameStateManager::state = state;
 }

@@ -4,6 +4,7 @@
 #include <iostream>
 #include "GameState/InGame.hpp"
 #include "Entity/Player.hpp"
+#include "TextureManager.h"
 
 EntityEnemy::EntityEnemy() : Entity(EntityType::ENEMY)
 {
@@ -14,22 +15,22 @@ EntityEnemy::EntityEnemy() : Entity(EntityType::ENEMY)
 
 void EntityEnemy::Draw()
 {
-    Rectangle rect;
-    // origin parameter shifts the position so we need to adjust
-    rect.x = position.x + size.x / 2;
-    rect.y = position.y + size.y / 2;
-    rect.width = size.x;
-    rect.height = size.y;
-
-    Vector2 origin = {
-        size.x / 2,
-        size.y / 2
-    };
-
     if (health > 0)
-        DrawRectanglePro(rect, origin, rotation, RED);
+    {
+        Rectangle src = {0, 0, 45, 25};
+        Rectangle dest = {position.x, position.y, 45, 25};
+        Vector2 origin = {8, 13};
+
+        DrawTexturePro(TextureManager::Get("grunt"), src, dest, origin, rotation, WHITE);
+    }
     else
-        DrawRectanglePro(rect, origin, rotation, GRAY);
+    {
+        Rectangle src = {0, 0, 75, 40};
+        Rectangle dest = {position.x, position.y, 75, 40};
+        Vector2 origin = {33, 19};
+
+        DrawTexturePro(TextureManager::Get("grunt_dead"), src, dest, origin, rotation, WHITE);
+    }
 }
 
 void EntityEnemy::Update()
