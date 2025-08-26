@@ -27,27 +27,36 @@ void EntityBullet::Draw()
 
 void EntityBullet::OnWorldCollide(CollisionInfo info, RectCollider collider)
 {
+    if (!active)
+        return;
+    
     InGameState* state = (InGameState*) GameStateManager::GetState();
 
     // hacky vector element removal, i love C++
     state->world.entites.erase(std::find(state->world.entites.begin(), state->world.entites.end(), this));
+    active = false;
 }
 
 void EntityBullet::OnEntityCollide(CollisionInfo info, Entity* otherEntity)
 {
-    if (otherEntity == creator)
+    if (!active)
+        return;
+    
+    else if (otherEntity == creator)
         return;
 
-    if (otherEntity->GetType() == EntityType::BULLET)
+    else if (otherEntity->GetType() == EntityType::BULLET)
         return;
 
-    if (otherEntity->GetType() == EntityType::ENEMY)
+    else if (otherEntity->GetType() == EntityType::ENEMY)
         ((EntityEnemy*) otherEntity)->health -= damage; 
 
-    if (otherEntity->GetType() == EntityType::PLAYER)
+    else if (otherEntity->GetType() == EntityType::PLAYER)
         ((EntityPlayer*) otherEntity)->health -= damage; 
 
+
     InGameState* state = (InGameState*) GameStateManager::GetState();
+
 
     // hacky vector element removal, i love C++
     state->world.entites.erase(std::find(state->world.entites.begin(), state->world.entites.end(), this));

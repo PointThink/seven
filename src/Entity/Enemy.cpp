@@ -26,7 +26,7 @@ void EntityEnemy::Draw()
     else
     {
         Rectangle src = {0, 0, 75, 40};
-        Rectangle dest = {position.x - 33, position.y - 19, 75, 40};
+        Rectangle dest = {position.x + 33 / 2, position.y + 19 / 2, 75, 40};
         Vector2 origin = {33, 19};
 
         DrawTexturePro(TextureManager::Get("grunt_dead"), src, dest, origin, rotation, WHITE);

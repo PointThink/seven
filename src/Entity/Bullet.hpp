@@ -7,6 +7,7 @@ struct EntityBullet : public Entity
     Vector motion;
     Entity* creator;
     int damage;
+    bool active = true;
 
     EntityBullet();
 
