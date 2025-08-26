@@ -16,8 +16,8 @@ struct Entity
 {
     Vector position;
     Vector size;
-    float rotation;
-    RectCollider collider;
+    float rotation = 0;
+    RectCollider collider = {0};
 
     inline Entity(EntityType type)
     {

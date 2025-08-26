@@ -93,7 +93,7 @@ AmmoPool::AmmoPool()
 {
     ammoTypes.insert({"9mm", 0});
     ammoTypes.insert({"12ga", 0});
-    ammoTypes.insert({"556", 0});
+    ammoTypes.insert({"762", 0});
 }
 
 int AmmoPool::GetAmmoCount(std::string ammoType)

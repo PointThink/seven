@@ -7,8 +7,8 @@
 InGameState::InGameState()
 {
     world.LoadFromFile("level.txt");
-    camera.zoom = 2;
-    camera.offset = {640, 360};
+    camera.zoom = 3;
+    camera.offset = {(float) GetScreenWidth() / 2, (float) GetScreenHeight() / 2};
 }
 
 void InGameState::Draw()
@@ -19,7 +19,6 @@ void InGameState::Draw()
     };
 
     camera.target = target;
-
 
     BeginMode2D(camera);
 

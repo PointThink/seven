@@ -8,7 +8,6 @@
 struct EntityEnemy : public Entity
 {
     Vector motion;
-    float rotation = 0;
     int health = 40;
     int i = 0;
 

@@ -8,7 +8,7 @@
 
 int main(int argc, char** argv)
 {
-    InitWindow(1280, 720, "Seven");
+    InitWindow(1600, 900, "Seven");
     
     srand(time(0));
 
@@ -34,7 +34,7 @@ int main(int argc, char** argv)
     }
     else
     {
-        InGameState* inGameState = new InGameState;
+        LevelEditorState* inGameState = new LevelEditorState;
         inGameState->world.LoadFromFile(std::string("level.txt"));
         GameStateManager::SetState(inGameState);
     }

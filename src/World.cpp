@@ -136,7 +136,7 @@ void World::ExportToFile(std::string path)
         switch (entity->GetType())
         {
             case EntityType::ENEMY:
-                file << "enemy=" << entity->position.x << "," << entity->position.y << std::endl;
+                file << "enemy=" << entity->position.x << "," << entity->position.y << "," << entity->rotation << std::endl;
                 break;
             case EntityType::AMMO_PICKUP:
             {
@@ -195,10 +195,12 @@ void World::LoadFromFile(std::string path)
             std::vector<std::string> posParts = SplitString(parts[1], ',');
             float x = std::stoi(posParts[0]);
             float y = std::stoi(posParts[1]);
+            float rotation = std::stoi(posParts[2]);
 
             EntityEnemy* enemy = new EntityEnemy;
             enemy->position.x = x;
             enemy->position.y = y;
+            enemy->rotation = rotation;
             entites.push_back(enemy);
         }
         if (parts[0] == "ammo")

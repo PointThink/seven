@@ -30,9 +30,11 @@ private:
     EditorMode mode = EditorMode::WALL;
     int zoom = 2;
 
-    std::vector<std::string> ammoPickupTypes = {"9mm", "12ga", "556"};
+    std::vector<std::string> ammoPickupTypes = {"9mm", "12ga", "762"};
     int currentAmmoPickupTypeIndex = 0;
 
     std::vector<std::string> weaponPickupTypes = {"smg", "shotgun", "rifle"};
     int currentWeaponPickupTypeIndex = 0;
+
+    float enemyRotation = 0;
 };

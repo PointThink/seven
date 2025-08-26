@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <iostream>
 #include <algorithm>
+#include <math.h>
 
 #include "Entity/Enemy.hpp"
 #include "Entity/AmmoPickup.hpp"
@@ -41,8 +42,24 @@ void LevelEditorState::Draw()
     Camera2D camera = {0};
     camera.zoom = zoom;
 
+    Vector mousePos = {
+        GetMousePosition().x / zoom,
+        GetMousePosition().y / zoom
+    };
+
     BeginMode2D(camera);
     world.Draw();
+
+    if (mode == EditorMode::ENEMY)
+    {
+        float length = 100;
+        float tangents = enemyRotation * 0.0174532925;
+        float offsetX = cos(tangents) * length;
+        float offsetY = sin(tangents) * length;
+
+        DrawLine(mousePos.x, mousePos.y, mousePos.x + offsetX, mousePos.y + offsetY, BLUE);
+    }
+
     EndMode2D();
 
     DrawText(GetEditorModeName(mode).c_str(), 10, 10, 30, GRAY);
@@ -82,8 +99,11 @@ void LevelEditorState::Update()
         {
             EntityEnemy* enemy = new EntityEnemy;
             enemy->position = {mousePos.x, mousePos.y};
+            enemy->rotation = enemyRotation;
             world.entites.push_back(enemy);
         }
+
+        enemyRotation += GetMouseWheelMove() * 11.25;
     }
 
     if (mode == EditorMode::PLAYER)

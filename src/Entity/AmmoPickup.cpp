@@ -9,7 +9,7 @@
 static std::unordered_map<std::string, int> pickupCounts = {
     {"9mm", 30},
     {"12ga", 8},
-    {"556", 30}
+    {"762", 30}
 };
 
 EntityAmmoPickup::EntityAmmoPickup() : Entity(EntityType::AMMO_PICKUP)
