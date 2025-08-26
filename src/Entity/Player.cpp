@@ -120,4 +120,7 @@ void EntityPlayer::Update()
     rotation = GetDirection(center, mousePos);
 
     weapons[currentWeaponSlot]->Update(this, &ammoPool);
+
+    if (weapons[currentWeaponSlot]->GetCurrentAmmo() == 0)
+        weapons[currentWeaponSlot]->Reload(&ammoPool);
 }
