@@ -10,6 +10,7 @@
 #include "Entity/AmmoPickup.hpp"
 #include "Entity/WeaponPickup.hpp"
 #include "Entity/Player.hpp"
+#include "TextureManager.h"
 
 std::string GetEditorModeName(EditorMode mode)
 {
@@ -25,6 +26,8 @@ std::string GetEditorModeName(EditorMode mode)
         return "Ammo pickup";
     case EditorMode::PLAYER:
         return "Player";
+    case EditorMode::FLOOR:
+        return "Floor";
     case EditorMode::DELETE:
         return "Delete";
     }
@@ -41,11 +44,10 @@ void LevelEditorState::Draw()
 {
     Camera2D camera = {0};
     camera.zoom = zoom;
+    camera.offset = {position.x, position.y};
 
-    Vector mousePos = {
-        GetMousePosition().x / zoom,
-        GetMousePosition().y / zoom
-    };
+    Vector2 mouseWorldPosRl = GetScreenToWorld2D(GetMousePosition(), camera);
+    mousePos = { mouseWorldPosRl.x, mouseWorldPosRl.y };
 
     BeginMode2D(camera);
     world.Draw();
@@ -69,18 +71,30 @@ void LevelEditorState::Draw()
         DrawText(ammoPickupTypes[currentAmmoPickupTypeIndex].c_str(), 10, 50, 30, GRAY);
     }
 
-    if (mode == EditorMode::WEAPON_PICKUP)
+    else if (mode == EditorMode::WEAPON_PICKUP)
     {
         DrawText(weaponPickupTypes[currentWeaponPickupTypeIndex].c_str(), 10, 50, 30, GRAY);
+    }
+    else if (mode == EditorMode::FLOOR)
+    {
+        DrawTextureEx(
+            TextureManager::Get(floorTextures[currentFloorTextureIndex]),
+            {0, 50},
+            0, 3, WHITE
+        );
     }
 }
 
 void LevelEditorState::Update()
 {
-    Vector mousePos = {
-        GetMousePosition().x / zoom,
-        GetMousePosition().y / zoom
-    };
+    if (IsKeyDown(KEY_W))
+        position.y += 300 * GetFrameTime();
+    if (IsKeyDown(KEY_S))
+        position.y -= 300 * GetFrameTime();
+    if (IsKeyDown(KEY_A))
+        position.x += 300 * GetFrameTime();
+    if (IsKeyDown(KEY_D))
+        position.x -= 300 * GetFrameTime();
 
     if (mode == EditorMode::WALL)
     {
@@ -92,8 +106,7 @@ void LevelEditorState::Update()
         if (IsMouseButtonDown(MOUSE_BUTTON_RIGHT))
             world.wallGrid->SetCell(gridX, gridY, false);
     }
-
-    if (mode == EditorMode::ENEMY)
+    else if (mode == EditorMode::ENEMY)
     {
         if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
         {
@@ -105,8 +118,7 @@ void LevelEditorState::Update()
 
         enemyRotation += GetMouseWheelMove() * 11.25;
     }
-
-    if (mode == EditorMode::PLAYER)
+    else if (mode == EditorMode::PLAYER)
     {
         if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
         {
@@ -115,8 +127,7 @@ void LevelEditorState::Update()
             world.entites.push_back(player);
         }
     }
-
-    if (mode == EditorMode::AMMO_PICKUP)
+    else if (mode == EditorMode::AMMO_PICKUP)
     {
         if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
         {
@@ -134,8 +145,7 @@ void LevelEditorState::Update()
         else if (currentAmmoPickupTypeIndex < 0)
             currentAmmoPickupTypeIndex = ammoPickupTypes.size() - 1;
     }
-
-    if (mode == EditorMode::WEAPON_PICKUP)
+    else if (mode == EditorMode::WEAPON_PICKUP)
     {
         if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
         {
@@ -153,8 +163,7 @@ void LevelEditorState::Update()
         else if (currentWeaponPickupTypeIndex < 0)
             currentWeaponPickupTypeIndex = weaponPickupTypes.size() - 1;
     }
-
-    if (mode == EditorMode::DELETE)
+    else if (mode == EditorMode::DELETE)
     {
         if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
         {
@@ -172,6 +181,24 @@ void LevelEditorState::Update()
             }
         }
     }
+    else if (mode == EditorMode::FLOOR)
+    {
+        int gridX = (mousePos.x) / CELL_SIZE;
+        int gridY = (mousePos.y) / CELL_SIZE;
+
+        if (IsMouseButtonDown(MOUSE_BUTTON_LEFT))
+            world.floorGrid->SetCell(gridX, gridY, floorTextures[currentFloorTextureIndex]);
+        if (IsMouseButtonDown(MOUSE_BUTTON_RIGHT))
+            world.floorGrid->SetCell(gridX, gridY, "floor_grass");
+
+        int wheelMove = GetMouseWheelMove();
+        currentFloorTextureIndex += wheelMove;
+
+        if (currentFloorTextureIndex > floorTextures.size() - 1)
+            currentFloorTextureIndex = 0;
+        else if (currentFloorTextureIndex < 0)
+            currentFloorTextureIndex = floorTextures.size() - 1;
+    }
 
     if (IsKeyPressed(KEY_KP_ADD))
         zoom++;
@@ -181,17 +208,19 @@ void LevelEditorState::Update()
     if (IsKeyPressed(KEY_F1))
         mode = EditorMode::WALL;
     if (IsKeyPressed(KEY_F2))
-        mode = EditorMode::PLAYER;
+        mode = EditorMode::FLOOR;
     if (IsKeyPressed(KEY_F3))
-        mode = EditorMode::ENEMY;
+        mode = EditorMode::PLAYER;
     if (IsKeyPressed(KEY_F4))
-        mode = EditorMode::WEAPON_PICKUP;
+        mode = EditorMode::ENEMY;
     if (IsKeyPressed(KEY_F5))
-        mode = EditorMode::AMMO_PICKUP;
+        mode = EditorMode::WEAPON_PICKUP;
     if (IsKeyPressed(KEY_F6))
+        mode = EditorMode::AMMO_PICKUP;
+    if (IsKeyPressed(KEY_F7))
         mode = EditorMode::DELETE;
 
-    if (IsKeyPressed(KEY_F7) || IsKeyPressed(KEY_F8))
+    if (IsKeyPressed(KEY_F8) || IsKeyPressed(KEY_F9))
         world.ExportToFile("level.txt");
 
     if (IsKeyPressed(KEY_F8))

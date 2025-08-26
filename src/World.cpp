@@ -9,6 +9,7 @@
 #include "Entity/WeaponPickup.hpp"
 #include "StringUtils.hpp"
 #include "Physics/Collisions.hpp"
+#include "TextureManager.h"
 
 WallGrid::WallGrid(int width, int height)
 {
@@ -46,6 +47,22 @@ std::vector<RectCollider> WallGrid::MakeCollidersFromCells()
 
     return colliders;
 }
+
+FloorGrid::FloorGrid(int width, int height)
+{
+    this->width = width;
+    this->height = height;
+    grid = new std::string[width * height];
+
+    for (int i = 0; i < width * height; i++)
+        grid[i] = "floor_grass";
+}
+
+FloorGrid::~FloorGrid()
+{
+    delete[] grid;
+}
+
 inline int ToGridIndex(float pixelCoord)
 {
     return pixelCoord / CELL_SIZE;
@@ -54,6 +71,7 @@ inline int ToGridIndex(float pixelCoord)
 World::World()
 {
     wallGrid = new WallGrid(100, 100);
+    floorGrid = new FloorGrid(100, 100);
     entites.push_back(new EntityPlayer);
     worldColliders = wallGrid->MakeCollidersFromCells();
 }
@@ -61,6 +79,7 @@ World::World()
 World::~World()
 {
     delete wallGrid;
+    delete floorGrid;
 }
 
 void World::Update()
@@ -103,18 +122,20 @@ void World::Update()
 
 void World::Draw()
 {
-    for (Entity* entity : entites)
-    {
-        entity->Draw();
-    }
-
     for (int y = 0; y < wallGrid->GetHeight(); y++)
     {
         for (int x = 0; x < wallGrid->GetWidth(); x++)
         {
+            DrawTexture(TextureManager::Get(floorGrid->GetCell(x, y)), x * CELL_SIZE, y * CELL_SIZE, WHITE);
+
             if (wallGrid->GetCell(x, y))
                 DrawRectangle(x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE, CELL_SIZE, BLACK);
         }
+    }
+
+    for (Entity* entity : entites)
+    {
+        entity->Draw();
     }
 }
 
@@ -128,6 +149,9 @@ void World::ExportToFile(std::string path)
         {
             if (wallGrid->GetCell(x, y))
                 file << "wall=" << x << "," << y << std::endl;
+
+            if (floorGrid->GetCell(x, y) != "floor_grass")
+                file << "floor=" << x << "," << y << "," << floorGrid->GetCell(x, y) << std::endl;
         }
     }
 
@@ -164,6 +188,9 @@ void World::LoadFromFile(std::string path)
     if (wallGrid != nullptr)
         delete wallGrid;
 
+    if (floorGrid != nullptr)
+        delete floorGrid;
+
     for (Entity* entity : entites)
         delete entity;
 
@@ -171,18 +198,15 @@ void World::LoadFromFile(std::string path)
     worldColliders.clear();
 
     wallGrid = new WallGrid(100, 100);
+    floorGrid = new FloorGrid(100, 100);
 
     std::ifstream file(path);
     std::string buffer;
 
     while(getline(file, buffer))
     {
-        std::cout << buffer << std::endl;
-
         std::vector<std::string> parts = SplitString(buffer, '=');
 
-        std::cout << parts[0] << " = " <<  parts[1] << std::endl;
-        
         if (parts[0] == "wall")
         {
             std::vector<std::string> posParts = SplitString(parts[1], ',');
@@ -190,7 +214,15 @@ void World::LoadFromFile(std::string path)
             int y = std::stoi(posParts[1]);
             wallGrid->SetCell(x, y, true);
         }
-        if (parts[0] == "enemy")
+        else if (parts[0] == "floor")
+        {
+            std::vector<std::string> posParts = SplitString(parts[1], ',');
+            int x = std::stoi(posParts[0]);
+            int y = std::stoi(posParts[1]);
+            std::string texture = posParts[2];
+            floorGrid->SetCell(x, y, texture);
+        }
+        else if (parts[0] == "enemy")
         {
             std::vector<std::string> posParts = SplitString(parts[1], ',');
             float x = std::stoi(posParts[0]);
@@ -203,7 +235,7 @@ void World::LoadFromFile(std::string path)
             enemy->rotation = rotation;
             entites.push_back(enemy);
         }
-        if (parts[0] == "ammo")
+        else if (parts[0] == "ammo")
         {
             std::vector<std::string> entityParts = SplitString(parts[1], ',');
             float x = std::stoi(entityParts[0]);
@@ -215,7 +247,7 @@ void World::LoadFromFile(std::string path)
             pickup->type = entityParts[2];
             entites.push_back(pickup);
         }
-        if (parts[0] == "weapon")
+        else if (parts[0] == "weapon")
         {
             std::vector<std::string> entityParts = SplitString(parts[1], ',');
             float x = std::stoi(entityParts[0]);
@@ -227,7 +259,7 @@ void World::LoadFromFile(std::string path)
             pickup->type = entityParts[2];
             entites.push_back(pickup);
         }
-        if (parts[0] == "player")
+        else if (parts[0] == "player")
         {
             std::vector<std::string> entityParts = SplitString(parts[1], ',');
             float x = std::stoi(entityParts[0]);

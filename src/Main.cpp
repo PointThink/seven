@@ -20,6 +20,13 @@ int main(int argc, char** argv)
     TextureManager::Add("grunt", "assets/textures/grunt.png");
     TextureManager::Add("grunt_dead", "assets/textures/grunt_dead.png");
 
+    TextureManager::Add("floor_grass", "assets/textures/floors/grass.png");
+    TextureManager::Add("floor_wood_dark", "assets/textures/floors/wood_dark.png");
+    TextureManager::Add("floor_wood_light", "assets/textures/floors/wood_light.png");
+    TextureManager::Add("floor_kitchen", "assets/textures/floors/kitchen.png");
+    TextureManager::Add("floor_pavement1", "assets/textures/floors/pavement1.png");
+    TextureManager::Add("floor_pavement2", "assets/textures/floors/pavement2.png");
+
     if (argc > 2 && std::string(argv[1]) == "run")
     {
         InGameState* inGameState = new InGameState;

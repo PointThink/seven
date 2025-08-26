@@ -33,9 +33,33 @@ private:
     bool* grid;
 };
 
+struct FloorGrid
+{
+    FloorGrid(int width, int height);
+    ~FloorGrid();
+
+    inline std::string GetCell(int x, int y)
+    {
+        return grid[y * height + x];
+    }
+
+    inline void SetCell(int x, int y, std::string floor)
+    {
+        grid[y * height + x] = floor;
+    }
+
+    inline int GetWidth() { return width; }
+    inline int GetHeight() { return height; }
+
+private:
+    int width, height;
+    std::string* grid;
+};
+
 struct World
 {
     WallGrid* wallGrid = nullptr;
+    FloorGrid* floorGrid = nullptr;
     std::vector<Entity*> entites;
     std::vector<RectCollider> worldColliders;
 
