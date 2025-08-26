@@ -40,6 +40,7 @@ struct Weapon
 protected:
     WeaponType type;
     std::string ammoType;
+    std::string fireSound;
     bool automatic;
     float fireDelay = false;
     int magazineCapacity;

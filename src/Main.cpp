@@ -37,6 +37,10 @@ int main(int argc, char** argv)
     SoundManager::Add("click", "assets/sounds/click.wav");
     SoundManager::Add("hover", "assets/sounds/hover.wav");
 
+    SoundManager::Add("weapon_pistol_fire", "assets/sounds/weapons/pistol_fire.ogg");
+    SoundManager::Add("weapon_smg_fire", "assets/sounds/weapons/smg_fire.ogg");
+    SoundManager::Add("weapon_shotgun_fire", "assets/sounds/weapons/shotgun_fire.ogg");
+
     if (argc > 2 && std::string(argv[1]) == "run")
     {
         InGameState* inGameState = new InGameState;

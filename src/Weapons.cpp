@@ -5,6 +5,7 @@
 
 #include "Entity/Entity.hpp"
 #include "Entity/Bullet.hpp"
+#include "SoundManager.hpp"
 
 void Weapon::Fire(Entity* user, float direction, bool firstPress)
 {
@@ -39,6 +40,7 @@ void Weapon::Fire(Entity* user, float direction, bool firstPress)
             }
 
             lastShot = GetTime();
+            SoundManager::Play(fireSound);
         }
     }
 }
@@ -121,6 +123,7 @@ WeaponPistol::WeaponPistol()
     reloadTime = 1;
     fireDelay = 0.1;
     spread = 2;
+    fireSound = "weapon_pistol_fire";
 }
 
 WeaponSMG::WeaponSMG()
@@ -133,6 +136,7 @@ WeaponSMG::WeaponSMG()
     reloadTime = 1.5;
     fireDelay = 0.07;
     spread = 4;
+    fireSound = "weapon_smg_fire";
 }
 
 WeaponShotgun::WeaponShotgun()
@@ -146,4 +150,5 @@ WeaponShotgun::WeaponShotgun()
     bulletsPerShot = 6;
     fireDelay = 0.5;
     spread = 12;
+    fireSound = "weapon_shotgun_fire";
 }
