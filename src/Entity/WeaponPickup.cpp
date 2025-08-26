@@ -21,7 +21,7 @@ Weapon* CreateWeaponFromString(std::string name)
 
 EntityWeaponPickup::EntityWeaponPickup() : Entity(EntityType::WEAPON_PICKUP)
 {
-    size = {16, 16};
+    size = {16, 20};
     collider.size = size;
 }
 

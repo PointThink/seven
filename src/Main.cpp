@@ -71,10 +71,8 @@ int main(int argc, char** argv)
         state->Update();
 
         BeginDrawing();
-        ClearBackground(WHITE);
-
+        ClearBackground(GRAY);
         state->Draw();
-
         EndDrawing();
     }
 
