@@ -33,7 +33,7 @@ void EntityBullet::OnWorldCollide(CollisionInfo info, RectCollider collider)
     InGameState* state = (InGameState*) GameStateManager::GetState();
 
     // hacky vector element removal, i love C++
-    state->world.entites.erase(std::find(state->world.entites.begin(), state->world.entites.end(), this));
+    state->world.entities.erase(std::find(state->world.entities.begin(), state->world.entities.end(), this));
     active = false;
 }
 
@@ -59,7 +59,7 @@ void EntityBullet::OnEntityCollide(CollisionInfo info, Entity* otherEntity)
 
 
     // hacky vector element removal, i love C++
-    state->world.entites.erase(std::find(state->world.entites.begin(), state->world.entites.end(), this));
+    state->world.entities.erase(std::find(state->world.entities.begin(), state->world.entities.end(), this));
 }
 
 void CreateBullet(Entity* creator, Vector position, int damage, float angle, float velocity)
@@ -75,5 +75,5 @@ void CreateBullet(Entity* creator, Vector position, int damage, float angle, flo
     bullet->motion = {velocity * cos(tangents), velocity * sin(tangents)};
 
     InGameState* state = (InGameState*) GameStateManager::GetState();
-    state->world.entites.push_back(bullet);
+    state->world.entities.push_back(bullet);
 }

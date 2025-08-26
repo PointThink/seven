@@ -2,6 +2,8 @@
 
 #include <raylib.h>
 #include <iostream>
+#include <math.h>
+
 #include "GameState/InGame.hpp"
 #include "Entity/Player.hpp"
 #include "TextureManager.h"
@@ -38,6 +40,17 @@ void EntityEnemy::Update()
     if (health <= 0)
         return;
 
+    if (lastSeenActive)
+    {
+        float direction = GetDirection(GetCenter(), lastSeenPosition);
+        targetRotation = direction;
+        float tangents = direction * 0.0174532925;
+        position.x += cos(tangents) * 100 * GetFrameTime();
+        position.y += sin(tangents) * 100 * GetFrameTime(); 
+    }
+
+    rotation = targetRotation;
+
     // check line of sight to player
     InGameState* state = (InGameState*) GameStateManager::GetState();
     Vector playerCenter = state->GetPlayer()->GetCenter();
@@ -45,10 +58,11 @@ void EntityEnemy::Update()
     if (weapon.GetCurrentAmmo() <= 0)
         weapon.Reload(nullptr);
     
-
-    
     if (state->world.HasLineOfSight(GetCenter(), playerCenter))
     {
+        lastSeenActive = true;
+            lastSeenPosition = playerCenter;
+
         if (!playerSeenLastFrame)
         {
             playerSeenStart = GetTime();
@@ -56,9 +70,11 @@ void EntityEnemy::Update()
         }
         else
         {
-            if (playerSeenStart + REACTION_TIME < GetTime())
+            if (playerSeenStart + reactionTime < GetTime())
             {
-                rotation = GetDirection(GetCenter(), playerCenter);
+                reactionTime = 0.2;
+                targetRotation = GetDirection(GetCenter(), playerCenter);
+                
                 weapon.Fire(this, rotation, true);
             }
         }

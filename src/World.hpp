@@ -60,8 +60,10 @@ struct World
 {
     WallGrid* wallGrid = nullptr;
     FloorGrid* floorGrid = nullptr;
-    std::vector<Entity*> entites;
+    std::vector<Entity*> entities;
     std::vector<RectCollider> worldColliders;
+
+    std::string file;
 
     World();
     ~World();
@@ -71,6 +73,8 @@ struct World
 
     void ExportToFile(std::string path);
     void LoadFromFile(std::string path);
+
+    int GetNumberOfAliveEnemies();
 
     bool HasLineOfSight(const Vector& from, const Vector& to);
 };

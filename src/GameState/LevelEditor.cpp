@@ -114,7 +114,7 @@ void LevelEditorState::Update()
             EntityEnemy* enemy = new EntityEnemy;
             enemy->position = {mousePos.x, mousePos.y};
             enemy->rotation = enemyRotation;
-            world.entites.push_back(enemy);
+            world.entities.push_back(enemy);
         }
 
         enemyRotation += GetMouseWheelMove() * 11.25;
@@ -125,7 +125,7 @@ void LevelEditorState::Update()
         {
             EntityPlayer* player = new EntityPlayer;
             player->position = {mousePos.x, mousePos.y};
-            world.entites.push_back(player);
+            world.entities.push_back(player);
         }
     }
     else if (mode == EditorMode::AMMO_PICKUP)
@@ -135,7 +135,7 @@ void LevelEditorState::Update()
             EntityAmmoPickup* pickup = new EntityAmmoPickup;
             pickup->type = ammoPickupTypes[currentAmmoPickupTypeIndex];
             pickup->position = mousePos;
-            world.entites.push_back(pickup);
+            world.entities.push_back(pickup);
         }
 
         int wheelMove = GetMouseWheelMove();
@@ -153,7 +153,7 @@ void LevelEditorState::Update()
             EntityWeaponPickup* pickup = new EntityWeaponPickup;
             pickup->type = weaponPickupTypes[currentWeaponPickupTypeIndex];
             pickup->position = mousePos;
-            world.entites.push_back(pickup);
+            world.entities.push_back(pickup);
         }
 
         int wheelMove = GetMouseWheelMove();
@@ -168,7 +168,7 @@ void LevelEditorState::Update()
     {
         if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
         {
-            for (Entity* entity : world.entites)
+            for (Entity* entity : world.entities)
             {
                 entity->collider.position = entity->position;
 
@@ -177,7 +177,7 @@ void LevelEditorState::Update()
                     mousePos.x < entity->collider.position.x + entity->collider.size.x && mousePos.y < entity->collider.position.y + entity->collider.size.y
                 )
                 {
-                    world.entites.erase(std::find(world.entites.begin(), world.entites.end(), entity));
+                    world.entities.erase(std::find(world.entities.begin(), world.entities.end(), entity));
                 }
             }
         }
@@ -222,8 +222,8 @@ void LevelEditorState::Update()
         mode = EditorMode::DELETE;
 
     if (IsKeyPressed(KEY_F8) || IsKeyPressed(KEY_F9))
-        world.ExportToFile("level.txt");
+        world.ExportToFile(world.file);
 
     if (IsKeyPressed(KEY_F8))
-        system("./build/seven run level.txt");
+        system(std::string("./build/seven run " + world.file).c_str());
 }

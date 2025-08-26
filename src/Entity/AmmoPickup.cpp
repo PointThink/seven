@@ -5,6 +5,7 @@
 
 #include "Player.hpp"
 #include "GameState/InGame.hpp"
+#include "TextureManager.h"
 
 static std::unordered_map<std::string, int> pickupCounts = {
     {"9mm", 30},
@@ -20,7 +21,8 @@ EntityAmmoPickup::EntityAmmoPickup() : Entity(EntityType::AMMO_PICKUP)
 
 void EntityAmmoPickup::Draw()
 {
-    DrawRectangle(position.x, position.y, size.x, size.y, ORANGE);
+    // DrawRectangle(position.x, position.y, size.x, size.y, ORANGE);
+    DrawTexture(TextureManager::Get(type), position.x, position.y, WHITE);
 }
 
 void EntityAmmoPickup::Update()
@@ -37,6 +39,6 @@ void EntityAmmoPickup::OnEntityCollide(CollisionInfo info, Entity* otherEntity)
     }
 
     InGameState* state = (InGameState*) GameStateManager::GetState();
-    state->world.entites.erase(std::find(state->world.entites.begin(), state->world.entites.end(), this));
+    state->world.entities.erase(std::find(state->world.entities.begin(), state->world.entities.end(), this));
 }
 

@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <raylib.h>
 #include <utility>
+#include <iostream>
 
 #include "Global.hpp"
 #include "GameState/InGame.hpp"
@@ -33,14 +34,14 @@ MainMenuButton::MainMenuButton(std::string text, std::function<void(MainMenu*)> 
 MainMenu::MainMenu()
 {
 	buttons[MENU_MAIN].push_back(MainMenuButton("Play", [](MainMenu* menu) { menu->state = MENU_LEVEL_SELECT; }));
-	buttons[MENU_MAIN].push_back(MainMenuButton("Level Editor", [](MainMenu* menu) { menu->state = MENU_LEVEL_EDITOR_SELECT; }));
+	// buttons[MENU_MAIN].push_back(MainMenuButton("Level Editor", [](MainMenu* menu) { menu->state = MENU_LEVEL_EDITOR_SELECT; }));
 	buttons[MENU_MAIN].push_back(MainMenuButton("Quit", [](MainMenu* menu) { exit(0); }));
 
 	std::pair<std::string, std::string> levels[] = {
-		{"Test level", "level.txt"},
-		{"Level 1", "assets/levels/level1.txt"},
-		{"Level 2", "assets/levels/level2.txt"},
-		{"Level 3", "assets/levels/level3.txt"},
+		{"House", "assets/levels/house.lvl"},
+		{"Apartments", "assets/levels/apartments.lvl"},
+		{"Office", "assets/levels/office.lvl"},
+		{"Warehouse", "assets/levels/Warehouse.lvl"}
 	};
 
 	for (std::pair<std::string, std::string> level : levels)
@@ -52,6 +53,10 @@ MainMenu::MainMenu()
 		);
 	}
 
+	buttons[MENU_LEVEL_SELECT].push_back(
+		MainMenuButton("Back", [](MainMenu* menu) { menu->state = MENU_MAIN; })
+	);
+
 	for (std::pair<std::string, std::string> level : levels)
 	{
 		buttons[MENU_LEVEL_EDITOR_SELECT].push_back(
@@ -60,6 +65,14 @@ MainMenu::MainMenu()
 			})
 		);
 	}
+
+	buttons[MENU_LEVEL_EDITOR_SELECT].push_back(
+		MainMenuButton("Back", [](MainMenu* menu) { menu->state = MENU_MAIN; })
+	);
+}
+
+MainMenu::~MainMenu()
+{
 }
 
 void MainMenu::Draw()

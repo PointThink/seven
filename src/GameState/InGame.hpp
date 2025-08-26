@@ -17,6 +17,8 @@ struct InGameState : GameState
     void Update() override;
     void Draw() override;
 
+    void Restart();
+
     inline EntityPlayer* GetPlayer() { return player; }
 
 private:

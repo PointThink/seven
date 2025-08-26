@@ -36,7 +36,7 @@ void Weapon::Fire(Entity* user, float direction, bool firstPress)
             {
                 float x = (float)rand()/(float)(RAND_MAX/spread) - (spread / 2);
                 std::cout << x << std::endl;
-                CreateBullet(user, userCenter, damage, direction + x, 800);
+                CreateBullet(user, userCenter, damage, direction + x, 1000);
             }
 
             lastShot = GetTime();
@@ -80,12 +80,12 @@ void Weapon::Update(Entity* user, AmmoPool* ammoPool)
         if (roundsToTake <= availableAmmo)
         {
             currentAmmo += roundsToTake;
-            ammoPool->TakeAmmo("9mm", roundsToTake);
+            ammoPool->TakeAmmo(ammoType, roundsToTake);
         }
         else
         {
             currentAmmo += availableAmmo;
-            ammoPool->TakeAmmo("9mm", availableAmmo);
+            ammoPool->TakeAmmo(ammoType, availableAmmo);
         }
     }
 }
@@ -144,11 +144,11 @@ WeaponShotgun::WeaponShotgun()
     type = WeaponType::SHOTGUN;
     ammoType = "12ga";
     magazineCapacity = 8;
-    automatic = true;
-    damage = 10;
+    automatic = false;
+    damage = 15;
     reloadTime = 1.5;
     bulletsPerShot = 6;
-    fireDelay = 0.5;
+    fireDelay = 0.75;
     spread = 12;
     fireSound = "weapon_shotgun_fire";
 }

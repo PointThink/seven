@@ -48,6 +48,6 @@ void EntityWeaponPickup::OnEntityCollide(CollisionInfo info, Entity* otherEntity
     }
 
     InGameState* state = (InGameState*) GameStateManager::GetState();
-    state->world.entites.erase(std::find(state->world.entites.begin(), state->world.entites.end(), this));
+    state->world.entities.erase(std::find(state->world.entities.begin(), state->world.entities.end(), this));
 }
 

@@ -24,6 +24,10 @@ int main(int argc, char** argv)
     TextureManager::Add("smg", "assets/textures/smg.png");
     TextureManager::Add("rifle", "assets/textures/rifle.png");
 
+    TextureManager::Add("9mm", "assets/textures/9mm.png");
+    TextureManager::Add("12ga", "assets/textures/12ga.png");
+    TextureManager::Add("762", "assets/textures/762.png");
+
     TextureManager::Add("grunt", "assets/textures/grunt.png");
     TextureManager::Add("grunt_dead", "assets/textures/grunt_dead.png");
 
@@ -33,6 +37,8 @@ int main(int argc, char** argv)
     TextureManager::Add("floor_kitchen", "assets/textures/floors/kitchen.png");
     TextureManager::Add("floor_pavement1", "assets/textures/floors/pavement1.png");
     TextureManager::Add("floor_pavement2", "assets/textures/floors/pavement2.png");
+    TextureManager::Add("floor_carpet_red", "assets/textures/floors/carpet_red.png");
+    TextureManager::Add("floor_carpet_grey", "assets/textures/floors/carpet_grey.png");
 
     TextureManager::Add("player_pistol", "assets/textures/player/player_pistol.png");
     TextureManager::Add("player_smg", "assets/textures/player/player_smg.png");
@@ -48,6 +54,8 @@ int main(int argc, char** argv)
     SoundManager::Add("weapon_smg_fire", "assets/sounds/weapons/smg_fire.ogg");
     SoundManager::Add("weapon_shotgun_fire", "assets/sounds/weapons/shotgun_fire.ogg");
     SoundManager::Add("weapon_rifle_fire", "assets/sounds/weapons/rifle_fire.ogg");
+
+    SetExitKey(0);
 
     if (argc > 2 && std::string(argv[1]) == "run")
     {

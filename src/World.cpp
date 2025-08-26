@@ -72,7 +72,7 @@ World::World()
 {
     wallGrid = new WallGrid(100, 100);
     floorGrid = new FloorGrid(100, 100);
-    entites.push_back(new EntityPlayer);
+    entities.push_back(new EntityPlayer);
     worldColliders = wallGrid->MakeCollidersFromCells();
 }
 
@@ -85,9 +85,9 @@ World::~World()
 void World::Update()
 {
     // other entities might be added or removed which could break everything
-    std::vector<Entity*> entitesCopy = entites;
+    std::vector<Entity*> entitiesCopy = entities;
 
-    for (Entity* entity : entitesCopy)
+    for (Entity* entity : entitiesCopy)
     {
         for (RectCollider collider : worldColliders)
         {
@@ -104,7 +104,7 @@ void World::Update()
             }
         }
 
-        for (Entity* otherEntity : entitesCopy)
+        for (Entity* otherEntity : entitiesCopy)
         {
             if (otherEntity == entity) continue;
 
@@ -129,11 +129,11 @@ void World::Draw()
             DrawTexture(TextureManager::Get(floorGrid->GetCell(x, y)), x * CELL_SIZE, y * CELL_SIZE, WHITE);
 
             if (wallGrid->GetCell(x, y))
-                DrawRectangle(x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE, CELL_SIZE, BLACK);
+                DrawRectangle(x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE, CELL_SIZE, {20, 20, 30, 255});
         }
     }
 
-    for (Entity* entity : entites)
+    for (Entity* entity : entities)
     {
         entity->Draw();
     }
@@ -155,7 +155,7 @@ void World::ExportToFile(std::string path)
         }
     }
 
-    for (Entity* entity : entites)
+    for (Entity* entity : entities)
     {
         switch (entity->GetType())
         {
@@ -185,16 +185,18 @@ void World::ExportToFile(std::string path)
 
 void World::LoadFromFile(std::string path)
 {
+    file = path;
+
     if (wallGrid != nullptr)
         delete wallGrid;
 
     if (floorGrid != nullptr)
         delete floorGrid;
 
-    for (Entity* entity : entites)
+    for (Entity* entity : entities)
         delete entity;
 
-    entites.clear();
+    entities.clear();
     worldColliders.clear();
 
     wallGrid = new WallGrid(100, 100);
@@ -233,7 +235,8 @@ void World::LoadFromFile(std::string path)
             enemy->position.x = x;
             enemy->position.y = y;
             enemy->rotation = rotation;
-            entites.push_back(enemy);
+            enemy->targetRotation = rotation;
+            entities.push_back(enemy);
         }
         else if (parts[0] == "ammo")
         {
@@ -245,7 +248,7 @@ void World::LoadFromFile(std::string path)
             pickup->position.x = x;
             pickup->position.y = y;
             pickup->type = entityParts[2];
-            entites.push_back(pickup);
+            entities.push_back(pickup);
         }
         else if (parts[0] == "weapon")
         {
@@ -257,7 +260,7 @@ void World::LoadFromFile(std::string path)
             pickup->position.x = x;
             pickup->position.y = y;
             pickup->type = entityParts[2];
-            entites.push_back(pickup);
+            entities.push_back(pickup);
         }
         else if (parts[0] == "player")
         {
@@ -268,7 +271,7 @@ void World::LoadFromFile(std::string path)
             EntityPlayer* player = new EntityPlayer;
             player->position.x = x;
             player->position.y = y;
-            entites.push_back(player);
+            entities.push_back(player);
         }
     }
 
@@ -287,4 +290,21 @@ bool World::HasLineOfSight(const Vector& from, const Vector& to)
         }
     }
     return true; // no blockers
+}
+
+int World::GetNumberOfAliveEnemies()
+{
+    int count = 0;
+
+    for (Entity* entity : entities)
+    {
+        if (entity->GetType() == EntityType::ENEMY)
+        {
+            EntityEnemy* enemy = (EntityEnemy*) entity;
+            if (enemy->health > 0)
+                count++;
+        }
+    }
+
+    return count;
 }

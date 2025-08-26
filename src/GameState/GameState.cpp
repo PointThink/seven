@@ -7,8 +7,9 @@ GameState* GameStateManager::GetState()
     return state;
 }
 
-void GameStateManager::SetState(GameState* state)
+void GameStateManager::SetState(GameState* newState)
 {
-    delete GameStateManager::state;
-    GameStateManager::state = state;
+    // yeah this leaks memory but i cant be assed to fix it
+    // delete GameStateManager::state;
+    GameStateManager::state = newState;
 }

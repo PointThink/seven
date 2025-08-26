@@ -46,7 +46,9 @@ private:
         "floor_wood_light",
         "floor_pavement1",
         "floor_pavement2",
-        "floor_kitchen"
+        "floor_kitchen",
+        "floor_carpet_red",
+        "floor_carpet_grey"
     };
 
     int currentFloorTextureIndex = 0;

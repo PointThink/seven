@@ -30,6 +30,7 @@ struct MainMenu : public GameState
 	int currentHovered = -1;
 
 	MainMenu();
+	~MainMenu();
 
 	void Draw() override;
 	void Update() override;
