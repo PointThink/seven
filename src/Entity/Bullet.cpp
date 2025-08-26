@@ -22,7 +22,7 @@ void EntityBullet::Update()
 
 void EntityBullet::Draw()
 {
-    DrawRectangle(position.x, position.y, size.x, size.y, BLACK);
+    DrawRectangle(position.x, position.y, 3, 3, ORANGE);
 }
 
 void EntityBullet::OnWorldCollide(CollisionInfo info, RectCollider collider)

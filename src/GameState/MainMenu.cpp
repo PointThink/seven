@@ -7,6 +7,7 @@
 #include "Global.hpp"
 #include "GameState/InGame.hpp"
 #include "GameState/GameState.hpp"
+#include "SoundManager.hpp"
 
 static void PlayLevel(std::string path)
 {
@@ -67,7 +68,10 @@ void MainMenu::Draw()
 
 	// DrawRectangle(boxPosX, boxPosY, boxSizeX, boxSizeY, GRAY);
 
+	bool hovered = false;
+
 	float drawOffset = 0;
+	int index = 0;
 	for (MainMenuButton button : buttons[state])
 	{
 		std::string buttonText = button.text;
@@ -83,6 +87,8 @@ void MainMenu::Draw()
 			mousePosition.x < textPosX + textSize.x && mousePosition.y < textPosY + textOffset
 		)
 		{
+			hovered = true;
+
 			buttonText = "> " + buttonText + " <";
 			Vector2 boldTextSize = MeasureTextEx(fontBold, buttonText.c_str(), 60, 0);
 			float boldTextPosX = boxPosX + boxSizeX / 2 - boldTextSize.x / 2;
@@ -90,16 +96,27 @@ void MainMenu::Draw()
 
 			DrawTextEx(fontBold, buttonText.c_str(), {boldTextPosX, boldTextPosY}, 60, 0, {167, 153, 255, 255});
 
+			if (currentHovered != index)
+			{
+				currentHovered = index;
+				SoundManager::Play("hover");
+			}
+
 			if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
 			{
 				button.onClicked(this);
+				SoundManager::Play("click");
 			}
 		}
 		else
 			DrawTextEx(font, buttonText.c_str(), {textPosX, textPosY}, 60, 0, WHITE);
 		
 		drawOffset += textOffset;
+		index++;
 	}
+
+	if (!hovered)
+		currentHovered = -1;
 }
 
 void MainMenu::Update()

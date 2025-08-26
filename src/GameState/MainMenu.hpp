@@ -26,6 +26,7 @@ struct MainMenu : public GameState
 {
 	std::vector<MainMenuButton> buttons[MENU_COUNT];
 	MainMenuState state = MENU_MAIN;
+	int currentHovered = -1;
 
 	MainMenu();
 

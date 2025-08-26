@@ -7,10 +7,12 @@
 #include "TextureManager.h"
 #include "Global.hpp"
 #include "GameState/MainMenu.hpp"
+#include "SoundManager.hpp"
 
 int main(int argc, char** argv)
 {
     InitWindow(1600, 900, "Seven");
+    InitAudioDevice();
     
     font = LoadFontEx("assets/Saira-Regular.ttf", 60, NULL, 0);
     fontBold = LoadFontEx("assets/Saira-Bold.ttf", 60, NULL, 0);
@@ -31,6 +33,9 @@ int main(int argc, char** argv)
     TextureManager::Add("floor_kitchen", "assets/textures/floors/kitchen.png");
     TextureManager::Add("floor_pavement1", "assets/textures/floors/pavement1.png");
     TextureManager::Add("floor_pavement2", "assets/textures/floors/pavement2.png");
+
+    SoundManager::Add("click", "assets/sounds/click.wav");
+    SoundManager::Add("hover", "assets/sounds/hover.wav");
 
     if (argc > 2 && std::string(argv[1]) == "run")
     {
