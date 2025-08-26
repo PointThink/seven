@@ -36,6 +36,7 @@ int main(int argc, char** argv)
 
     SoundManager::Add("click", "assets/sounds/click.wav");
     SoundManager::Add("hover", "assets/sounds/hover.wav");
+    SoundManager::Add("denied", "assets/sounds/denied.wav");
 
     SoundManager::Add("weapon_pistol_fire", "assets/sounds/weapons/pistol_fire.ogg");
     SoundManager::Add("weapon_smg_fire", "assets/sounds/weapons/smg_fire.ogg");

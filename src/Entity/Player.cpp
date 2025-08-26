@@ -4,6 +4,7 @@
 #include <iostream>
 
 #include "GameState/InGame.hpp"
+#include "SoundManager.hpp"
 
 EntityPlayer::EntityPlayer() : Entity(EntityType::PLAYER)
 {
@@ -61,13 +62,36 @@ void EntityPlayer::Update()
         motion.x += 100;
 
     if (IsKeyPressed(KEY_ONE))
-        currentWeaponSlot = 0;
+    {
+        if (weapons[0] != nullptr)
+            currentWeaponSlot = 0;
+        else
+            SoundManager::Play("denied");
+    }
+
     if (IsKeyPressed(KEY_TWO))
-        currentWeaponSlot = 1;
+    {
+        if (weapons[1] != nullptr)
+            currentWeaponSlot = 1;
+        else
+            SoundManager::Play("denied");
+    }
+
     if (IsKeyPressed(KEY_THREE))
-        currentWeaponSlot = 2;
+    {
+        if (weapons[2] != nullptr)
+            currentWeaponSlot = 2;
+        else
+            SoundManager::Play("denied");
+    }
+
     if (IsKeyPressed(KEY_FOUR))
-        currentWeaponSlot = 3;
+    {
+        if (weapons[3] != nullptr)
+            currentWeaponSlot = 3;
+        else
+            SoundManager::Play("denied");
+    }
 
     if (IsKeyPressed(KEY_R))
         weapons[currentWeaponSlot]->Reload(&ammoPool);
