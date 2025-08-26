@@ -591,3 +591,4 @@ weapon=118,97,smg
 weapon=33,97,shotgun
 enemy=197,39,0
 enemy=207,150,135
+weapon=90,55,rifle

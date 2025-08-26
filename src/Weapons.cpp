@@ -152,3 +152,16 @@ WeaponShotgun::WeaponShotgun()
     spread = 12;
     fireSound = "weapon_shotgun_fire";
 }
+
+WeaponRifle::WeaponRifle()
+{
+    type = WeaponType::RIFLE;
+    ammoType = "762";
+    magazineCapacity = 30;
+    automatic = true;
+    damage = 15;
+    reloadTime = 1.5;
+    fireDelay = 0.1;
+    spread = 2;
+    fireSound = "weapon_rifle_fire";
+}

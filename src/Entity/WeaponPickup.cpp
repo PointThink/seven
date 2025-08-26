@@ -16,7 +16,7 @@ Weapon* CreateWeaponFromString(std::string name)
     else if (name == "shotgun")
         return new WeaponShotgun();
     else if (name == "rifle")
-        return new WeaponPistol(); // todo: implement
+        return new WeaponRifle();
 }
 
 EntityWeaponPickup::EntityWeaponPickup() : Entity(EntityType::WEAPON_PICKUP)

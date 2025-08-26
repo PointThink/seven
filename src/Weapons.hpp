@@ -70,3 +70,8 @@ struct WeaponShotgun : public Weapon
 {
     WeaponShotgun();
 };
+
+struct WeaponRifle : public Weapon
+{
+    WeaponRifle();
+};
