@@ -5,6 +5,7 @@
 
 #include "GameState/InGame.hpp"
 #include "SoundManager.hpp"
+#include "TextureManager.h"
 
 EntityPlayer::EntityPlayer() : Entity(EntityType::PLAYER)
 {
@@ -39,9 +40,48 @@ void EntityPlayer::Draw()
     };
 
     if (health > 0)
-        DrawRectanglePro(rect, origin, rotation, BLUE);
+    {
+        if (weapons[currentWeaponSlot]->GetType() == WeaponType::PISTOL)
+        {
+            Rectangle src = {0, 0, 30, 23};
+            Rectangle dest = {position.x + 6, position.y + 11, 30, 23};
+            Vector2 origin = {6, 11};
+
+            DrawTexturePro(TextureManager::Get("player_pistol"), src, dest, origin, rotation, WHITE);
+        }
+        else if (weapons[currentWeaponSlot]->GetType() == WeaponType::RIFLE)
+        {
+            Rectangle src = {0, 0, 45, 25};
+            Rectangle dest = {position.x + 8, position.y + 13, 45, 25};
+            Vector2 origin = {8, 13};
+
+            DrawTexturePro(TextureManager::Get("player_rifle"), src, dest, origin, rotation, WHITE);
+        }
+        else if (weapons[currentWeaponSlot]->GetType() == WeaponType::SMG)
+        {
+            Rectangle src = {0, 0, 37, 25};
+            Rectangle dest = {position.x + 8, position.y + 13, 37, 25};
+            Vector2 origin = {8, 13};
+
+            DrawTexturePro(TextureManager::Get("player_smg"), src, dest, origin, rotation, WHITE);
+        }
+        else if (weapons[currentWeaponSlot]->GetType() == WeaponType::SHOTGUN)
+        {
+            Rectangle src = {0, 0, 45, 25};
+            Rectangle dest = {position.x + 8, position.y + 13, 45, 25};
+            Vector2 origin = {8, 13};
+
+            DrawTexturePro(TextureManager::Get("player_shotgun"), src, dest, origin, rotation, WHITE);
+        }
+    }
     else
-        DrawRectanglePro(rect, origin, rotation, GRAY);
+    {
+        Rectangle src = {0, 0, 75, 40};
+        Rectangle dest = {position.x + 8, position.y + 13, 75, 40};
+        Vector2 origin = {8, 13};
+
+        DrawTexturePro(TextureManager::Get("player_dead"), src, dest, origin, rotation, WHITE);
+    }
 }
 
 void EntityPlayer::Update()

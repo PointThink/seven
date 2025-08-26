@@ -34,6 +34,12 @@ int main(int argc, char** argv)
     TextureManager::Add("floor_pavement1", "assets/textures/floors/pavement1.png");
     TextureManager::Add("floor_pavement2", "assets/textures/floors/pavement2.png");
 
+    TextureManager::Add("player_pistol", "assets/textures/player/player_pistol.png");
+    TextureManager::Add("player_smg", "assets/textures/player/player_smg.png");
+    TextureManager::Add("player_rifle", "assets/textures/player/player_rifle.png");
+    TextureManager::Add("player_shotgun", "assets/textures/player/player_shotgun.png");
+    TextureManager::Add("player_dead", "assets/textures/player/player_dead.png");
+
     SoundManager::Add("click", "assets/sounds/click.wav");
     SoundManager::Add("hover", "assets/sounds/hover.wav");
     SoundManager::Add("denied", "assets/sounds/denied.wav");
