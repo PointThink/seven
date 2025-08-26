@@ -5,11 +5,16 @@
 #include "GameState/InGame.hpp"
 #include "GameState/LevelEditor.hpp"
 #include "TextureManager.h"
+#include "Global.hpp"
+#include "GameState/MainMenu.hpp"
 
 int main(int argc, char** argv)
 {
     InitWindow(1600, 900, "Seven");
     
+    font = LoadFontEx("assets/Saira-Regular.ttf", 60, NULL, 0);
+    fontBold = LoadFontEx("assets/Saira-Bold.ttf", 60, NULL, 0);
+
     srand(time(0));
 
     TextureManager::Add("pistol", "assets/textures/pistol.png");
@@ -41,9 +46,7 @@ int main(int argc, char** argv)
     }
     else
     {
-        LevelEditorState* inGameState = new LevelEditorState;
-        inGameState->world.LoadFromFile(std::string("level.txt"));
-        GameStateManager::SetState(inGameState);
+        GameStateManager::SetState(new MainMenu);
     }
 
 /*

@@ -11,6 +11,7 @@
 #include "Entity/WeaponPickup.hpp"
 #include "Entity/Player.hpp"
 #include "TextureManager.h"
+#include "Global.hpp"
 
 std::string GetEditorModeName(EditorMode mode)
 {
@@ -64,16 +65,16 @@ void LevelEditorState::Draw()
 
     EndMode2D();
 
-    DrawText(GetEditorModeName(mode).c_str(), 10, 10, 30, GRAY);
+    DrawTextEx(font, GetEditorModeName(mode).c_str(), {10, 10}, 60, 0, WHITE);
 
     if (mode == EditorMode::AMMO_PICKUP)
     {
-        DrawText(ammoPickupTypes[currentAmmoPickupTypeIndex].c_str(), 10, 50, 30, GRAY);
+        DrawTextEx(font, ammoPickupTypes[currentAmmoPickupTypeIndex].c_str(), {10, 50}, 40, 0, WHITE);
     }
 
     else if (mode == EditorMode::WEAPON_PICKUP)
     {
-        DrawText(weaponPickupTypes[currentWeaponPickupTypeIndex].c_str(), 10, 50, 30, GRAY);
+       DrawTextEx(font, weaponPickupTypes[currentWeaponPickupTypeIndex].c_str(), {10, 50}, 40, 0, WHITE);
     }
     else if (mode == EditorMode::FLOOR)
     {
