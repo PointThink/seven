@@ -41,7 +41,7 @@ MainMenu::MainMenu()
 		{"House", "assets/levels/house.lvl"},
 		{"Apartments", "assets/levels/apartments.lvl"},
 		{"Office", "assets/levels/office.lvl"},
-		{"Warehouse", "assets/levels/Warehouse.lvl"}
+		{"Warehouse", "assets/levels/warehouse.lvl"}
 	};
 
 	for (std::pair<std::string, std::string> level : levels)
